@@ -32,5 +32,31 @@ function getResults(query) {
 }
 
 function displayResults(weather) {
-    console.log(weather)
+    let city = document.querySelector('.location .city')
+    city.innerText = `${weather.name}, ${weather.sys.country}`
+
+    let now = new Date()
+    let date = document.querySelector('.location .date')
+    date.innerText = dateBuilder(now)
+
+    let temp = document.querySelector('.current .temperature')
+    temp.innerHTML = `${Math.round(weather.main.temp)}°c`
+
+    let description = document.querySelector('.current .weather')
+    description.innerText = `${weather.weather[0].description}` // é um Array
+
+    let lowhi = document.querySelector('.current .low-high')
+    lowhi.innerText = `${Math.round(weather.main.temp_min)}°c / ${Math.round(weather.main.temp_max)} °c`
+}
+
+function dateBuilder (day) {
+    let months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
+    let days = ["Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado"]
+
+    let dayz = days[day.getDay()]
+    let date = day.getDate()
+    let month = months[day.getMonth()]
+    let year = day.getFullYear()
+
+    return `${dayz} ${date} ${month} ${year}`
 }
