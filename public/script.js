@@ -6,20 +6,31 @@ const api = {
 const searchBox = document.querySelector('.search-box')
 searchBox.addEventListener('keypress', setQuery)
 
-function setQuery (event) {
+function setQuery(event) {
     if (event.keyCode === 13) {
-       getResults(searchBox.value)
-       console.log(searchBox.value)
+        getResults(searchBox.value)
     }
 }
 
-function getResults (query) {
-    fetch(`${api.base}weather?q=${query}&appid=${api.key}`)
-    .then(weather => {
-        return weather.json()
-    }).then(displayResults)
+function getResults(query) {
+    // Como o metodo includes é case sensitive temos que passar tudo para lower case
+    var query = query.toLowerCase()
+    // Corrige um bug em que se a pessoa colocar uma cidade com acento ~ irá dar erro na requisição GET.
+    if (query.includes('ã') || query.includes('õ')) {
+        var query = query.replace(/ã/g, 'a')
+        var query = query.replace(/õ/g, 'o')
+        fetch(`${api.base}weather?q=${query}&appid=${api.key}&units=metric&lang=pt_br`)
+            .then(weather => {
+                return weather.json()
+            }).then(displayResults)
+    } else {
+        fetch(`${api.base}weather?q=${query}&appid=${api.key}&units=metric&lang=pt_br`)
+            .then(weather => {
+                return weather.json()
+            }).then(displayResults)
+    }
 }
 
-function displayResults (weather) {
+function displayResults(weather) {
     console.log(weather)
 }
